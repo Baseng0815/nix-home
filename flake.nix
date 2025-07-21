@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-25.05";
 
-    home-manager {
+    home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -17,7 +17,7 @@
       pkgs = import nixpkgs { inherit system; };
     in {
       homeConfigurations = {
-	bastian = home-manager.lib.homeManageConfiguration {
+	bastian = home-manager.lib.homeManagerConfiguration {
 	  inherit pkgs;
 	  modules = [ ./home.nix ];
 	};

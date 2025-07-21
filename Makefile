@@ -1,3 +1,6 @@
-.PHONY: update
+.PHONY: update clean
 update:
-	home-manager switch --flake .
+	home-manager switch --flake .#bastian
+
+clean:
+	nix-collect-garbage -d
