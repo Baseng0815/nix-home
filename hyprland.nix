@@ -5,6 +5,10 @@
     enable = true;
     xwayland.enable = true;
 
+    plugins = [
+
+    ];
+      
     # https://wiki.hypr.land/Configuring/Variables/
     settings = {
       "$mod" = "ALT";
@@ -27,6 +31,10 @@
         "$mod,Space,togglefloating"
         "$mod,m,fullscreen"
 
+        "$mod,PERIOD,focusmonitor,+1"
+        "$mod,COMMA,focusmonitor,-1"
+
+        "$mod,0,workspace,0"
         "$mod,1,workspace,1"
         "$mod,2,workspace,2"
         "$mod,3,workspace,3"

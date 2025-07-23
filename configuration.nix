@@ -17,6 +17,10 @@
   boot.loader.grub.useOSProber = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+  };
+
   security = {
     rtkit.enable = true;
     polkit.enable = true;
@@ -50,11 +54,71 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  programs.zsh.enable = true;
-  programs.light.enable = true;
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
+  programs = {
+    zsh.enable = true;
+    light.enable = true;
+
+    hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
+
+    tmux = {
+      enable = true;
+      shortcut = "a";
+      historyLimit = 100000;
+      keyMode = "vi";
+      plugins = with pkgs.tmuxPlugins; [
+        yank
+        vim-tmux-navigator
+        vim-tmux-focus-events
+      ];
+      extraConfig = ''
+        unbind h
+        unbind l
+        unbind j
+        unbind k
+        bind h previous-window
+        bind l next-window
+        bind j split-window -v
+        bind k split-window -h
+        unbind '"'
+        unbind %
+
+        bind r source-file ~/.tmux.conf
+
+        # -r = repeat
+        bind -r C-k resize-pane -U
+        bind -r C-j resize-pane -D
+        bind -r C-h resize-pane -L
+        bind -r C-l resize-pane -R
+
+        # Smart pane switching with awareness of Vim splits.
+        # See: https://github.com/christoomey/vim-tmux-navigator
+        is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+            | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+        # -n = no leader
+        bind -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+        bind -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+        bind -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+        bind -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+        tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
+        if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
+            "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+        if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
+            "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+
+        bind -T copy-mode-vi 'C-h' select-pane -L
+        bind -T copy-mode-vi 'C-j' select-pane -D
+        bind -T copy-mode-vi 'C-k' select-pane -U
+        bind -T copy-mode-vi 'C-l' select-pane -R
+        bind -T copy-mode-vi 'C-\' select-pane -l
+
+        bind-key -T copy-mode-vi 'v' send -X begin-selection     # Begin selection in copy mode.
+        bind-key -T copy-mode-vi 'C-v' send -X rectangle-toggle  # Begin selection in copy mode.
+        bind-key -T copy-mode-vi 'y' send -X copy-selection      # Yank selection in copy mode.
+      '';
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -73,24 +137,15 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # system and service stuff
+    # only systemwide tools; user applications go into the user config
     home-manager
-
-    # CLI
-    awesome
     git
     gnumake
     neovim   
-    rofi
-    tmux
     vim
     htop
-    alacritty
     wget
     acpi
-
-    # GUI
-    brave
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
