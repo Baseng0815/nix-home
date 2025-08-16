@@ -11,7 +11,7 @@
 
   home = {
     packages = with pkgs; [
-      hello
+      jetbrains-toolbox
       zsh-vi-mode
       brave
       hardinfo2

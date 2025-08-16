@@ -22,6 +22,11 @@
         enabled = false;
       };
 
+      bindm = [
+        "$mod,mouse:272,movewindow"
+        "$mod,mouse:273,resizewindow"
+      ];
+
       # https://wiki.hypr.land/Configuring/Binds/
       bind = [
         "$mod SHIFT,RETURN,exec,alacritty"
