@@ -16,6 +16,9 @@
       brave
       hardinfo2
       zotero
+      sxiv
+      zathura
+      mpv
       zsh-fzf-tab
       zsh-fzf-history-search
       pinentry-curses
@@ -157,7 +160,7 @@
         #workspaces,
         #clock {
           background-color: rgba(1.0, 1.0, 1.0, 0.5);
-          padding: 5px;
+          padding: 0px 5px;
           border-radius: 5px;
           border: 2px solid #8C98BD;
           margin-right: 0.5em;

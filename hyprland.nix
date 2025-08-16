@@ -64,8 +64,8 @@
         "$mod,k,layoutmsg,cycleprev"
         "$mod,i,layoutmsg,addmaster"
         "$mod,d,layoutmsg,removemaster"
-        "$mod,h,layoutmsg,mfact -0.1"
-        "$mod,l,layoutmsg,mfact +0.1"
+        "$mod,h,layoutmsg,mfact -0.05"
+        "$mod,l,layoutmsg,mfact +0.05"
         "$mod,Return,layoutmsg,swapwithmaster master"
         "$mod SHIFT,up,layoutmsg,orientationtop"
         "$mod SHIFT,right,layoutmsg,orientationright"
@@ -82,6 +82,7 @@
     };
 
     extraConfig = ''
+      windowrule = opacity 0.95 0.95 0.95, class:Alacritty
       monitor=,highres,auto,1
     '';
   };

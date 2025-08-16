@@ -22,8 +22,15 @@
       cmp-cmdline
       nvim-cmp
 
+      # seamless navigation between vim and tmux panes
+      vim-tmux-navigator
+
+      # snippets
       luasnip
       cmp_luasnip
+
+      # file browser
+      nerdtree
     ];
   };
 }
