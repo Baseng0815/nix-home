@@ -63,6 +63,11 @@
       withUWSM = true;
     };
 
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+    };
+
     tmux = {
       enable = true;
       shortcut = "a";
@@ -141,11 +146,11 @@
     home-manager
     git
     gnumake
-    neovim   
     vim
     htop
     wget
     acpi
+    rustup
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

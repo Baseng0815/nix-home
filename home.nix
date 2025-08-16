@@ -4,6 +4,7 @@
   imports = [
     ./hyprland.nix
     ./neovim.nix
+    ./stylix.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -15,6 +16,9 @@
       brave
       hardinfo2
       zotero
+      zsh-fzf-tab
+      zsh-fzf-history-search
+      pinentry-curses
     ];
 
     username = "bastian";
@@ -26,6 +30,15 @@
     dunst = {
       enable = true;
     }; 
+
+    gpg-agent = {
+      enable = true;
+      defaultCacheTtl = 36000;
+      maxCacheTtl = 36000;
+      defaultCacheTtlSsh = 36000;
+      enableSshSupport = true;
+      pinentry.package = pkgs.pinentry-curses;
+    };
   };
 
   programs = {
@@ -38,13 +51,27 @@
       initContent = ''
         function zvm_config() {
           ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+          ZVM_INIT_MODE=sourcing
         }
 
         setopt AUTO_CD
-        bindkey '^@' autosuggest-accept
 
         source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh	
+        source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+
+        bindkey -M viins '^R' fzf-history-widget
+        bindkey -M vicmd '^R' fzf-history-widget
+        bindkey '^@' autosuggest-accept
       '';
+    };
+
+    gpg = {
+      enable = true;
+    };
+
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
     };
 
     vesktop = {
@@ -151,6 +178,9 @@
       enable = true;
       userEmail = "bastian.engel00@gmail.com";
       userName = "Bastian Engel";
+      signing = {
+        key = "81B31C064DD87927";
+      };
     };
 
     lazygit = {

@@ -10,9 +10,14 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    stylix = {
+      url = "github:nix-community/stylix/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, stylix, ... }:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -21,7 +26,10 @@
       homeConfigurations = {
 	bastian = home-manager.lib.homeManagerConfiguration {
 	  inherit pkgs;
-	  modules = [ ./home.nix ];
+	  modules = [
+            stylix.homeModules.stylix
+            ./home.nix
+          ];
 	};
       };
     };
