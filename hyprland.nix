@@ -30,6 +30,7 @@
         "$mod SHIFT,w,forcekillactive"
         "$mod,Space,togglefloating"
         "$mod,m,fullscreen"
+        "$mod,b,exec,pkill -SIGUSR1 waybar"
 
         "$mod,PERIOD,focusmonitor,+1"
         "$mod,COMMA,focusmonitor,-1"
