@@ -183,6 +183,7 @@
       userName = "Bastian Engel";
       signing = {
         key = "81B31C064DD87927";
+        signByDefault = true;
       };
     };
 
