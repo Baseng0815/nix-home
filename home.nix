@@ -8,20 +8,32 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+  fonts.fontconfig.enable = lib.mkForce true;
 
   home = {
     packages = with pkgs; [
+      # gui
       jetbrains-toolbox
-      zsh-vi-mode
       brave
       hardinfo2
       zotero
+      libreoffice
+
+      # tui or gui-from-terminal
+      pinentry-curses # password entry for gpg-agent
+      zsh-fzf-tab
+      zsh-fzf-history-search
+      zsh-vi-mode
       sxiv
       zathura
       mpv
-      zsh-fzf-tab
-      zsh-fzf-history-search
-      pinentry-curses
+      killall
+
+      # other utility
+      nil # Nix language server
+
+      # fonts
+      source-code-pro
     ];
 
     username = "bastian";
@@ -91,7 +103,7 @@
         mainBar = {
           layer = "top";
           position = "top";
-          output = [ "DP-1" "DP-3" ];
+          output = [ "eDP-1" ];
 
           modules-center = [ "clock" ];
 
@@ -106,7 +118,7 @@
 
           };
 
-          modules-right = [ "cpu" "temperature" "memory" "disk" "network" "privacy" "pulseaudio" ];
+          modules-right = [ "cpu" "battery" "memory" "disk" "network" "privacy" "pulseaudio" ];
 
           cpu = {
             interval = 5;
@@ -116,6 +128,10 @@
 
           temperature = {
             hwmon-path = "/sys/class/hwmon/hwmon1/temp1_input";
+          };
+
+          battery = {
+            format = "Battery: {capacity}%";
           };
 
           memory = {
@@ -153,6 +169,7 @@
         #cpu,
         #temperature,
         #memory,
+        #battery,
         #disk,
         #network,
         #privacy,
@@ -197,6 +214,20 @@
 
     rofi = {
       enable = true;
+      extraConfig = {
+        show-icons = true;
+      };
+      theme = {
+        "*" = {
+          highlight = "bold italic";
+          scrollbar = true;
+          font = "Source Code Pro 20";
+        };
+
+        "element-icon" = {
+          size = "32px";
+        };
+      };
     };
 
     spotify-player = {

@@ -60,6 +60,11 @@ require('lspconfig').clangd.setup {
     settings = { }
 }
 
+require('lspconfig').nil_ls.setup {
+    capabilities = lsp_capabilities,
+    settings = { }
+}
+
 require('luasnip.loaders.from_vscode').lazy_load()
 require("luasnip.loaders.from_snipmate").lazy_load()
 
