@@ -11,10 +11,10 @@
       ${builtins.readFile ./neovim/options.lua}
       ${builtins.readFile ./neovim/lsp.lua}
       ${builtins.readFile ./neovim/keybinds.lua}
+      ${builtins.readFile ./neovim/telescope.lua}
     '';
     plugins = with pkgs.vimPlugins; [
       # lsp and completion stuff
-      telescope-nvim
       nvim-lspconfig
       cmp-nvim-lsp
       cmp-buffer
@@ -29,8 +29,11 @@
       luasnip
       cmp_luasnip
 
-      # file browser
+      # file browser and other navigation stuff
       nerdtree
+      fzf-lua
+      telescope-nvim
+      telescope-ui-select-nvim
     ];
   };
 }

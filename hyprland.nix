@@ -25,7 +25,7 @@
         "$mod,w,killactive"
         "$mod SHIFT,w,forcekillactive"
         "$mod,Space,togglefloating"
-        "$mod,b,exec,killall -SIGUSR1 waybar"
+        "$mod,b,exec,pkill -SIGUSR1 waybar"
         "$mod,m,fullscreen"
         "$mod,O,fullscreen"
 

@@ -10,6 +10,19 @@
       ./hardware-configuration.nix
     ];
 
+  hardware = {
+    opengl.enable = true;
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      settings = {
+        General = {
+          Experimental = true;
+        };
+      };
+    };
+  };
+
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
@@ -150,7 +163,6 @@
     htop
     wget
     acpi
-    rustup
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -169,8 +181,14 @@
     actkbd = {
       enable = true;
       bindings = [
-	{ keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 20"; }
-	{ keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 20"; }
+        # media keys
+	{ keys = [ 113 ]; events = [ "key" ]; command = "wpctl set-mute @DEFAULT_SINK@ toggle"; }
+	{ keys = [ 114 ]; events = [ "key" ]; command = "wpctl set-volume @DEFAULT_SINK@ 0.1-"; }
+	{ keys = [ 115 ]; events = [ "key" ]; command = "wpctl set-volume @DEFAULT_SINK@ 0.1+"; }
+
+        # brightness
+	{ keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 5"; }
+	{ keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 5"; }
       ];
     };
 
