@@ -26,11 +26,11 @@
 
         };
 
-        modules-right = [ "cpu" "battery" "memory" "disk" "network" "privacy" "pulseaudio" ];
+        modules-right = [ "cpu" "battery" "memory" "disk" "network" "privacy" "wireplumber" ];
 
         cpu = {
           interval = 5;
-          format = "CPU: {usage}% ({avg_frequency}GHz)";
+          format = "󰻠 {usage}% ({avg_frequency}GHz)";
           on-click = "exec alacritty -e sh -c \"htop\"";
         };
 
@@ -39,33 +39,37 @@
         };
 
         battery = {
-          format = "Battery: {capacity}%";
+          format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          format = "{icon} {capacity}%";
         };
 
         memory = {
           interval = 5;
-          format = "Memory: {used}GiB/{total}GiB ({percentage}%)";
+          format = " {used}GiB/{total}GiB ({percentage}%)";
         };
 
         disk = {
           interval = 30;
-          format = "Disk: {used}/{total} ({percentage_used}%)";
+          format = " {used}/{total} ({percentage_used}%)";
           path = "/";
         };
 
         network = {
-          format = "{ipaddr}/{cidr} on {ifname}";
+          format = "󰲊 {ipaddr}/{cidr} on {ifname}";
+          format-ethernet = "󰈁 {ipaddr}/{cidr} on {ifname}";
+          format-wifi = "󰖩 {ipaddr}/{cidr} on {ifname}";
         };
 
-        pulseaudio = {
-
+        wireplumber = {
+          format-icons = [ "" "󰕿" "󰖀" "󰕾" ];
+          format = "{icon} {volume}%";
         };
       };
     };
 
     style = ''
       * {
-        font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+        font-family: Symbols Nerd Font, FontAwesome, sans-serif;
         font-size: 14px;
       }
 
@@ -81,7 +85,7 @@
       #disk,
       #network,
       #privacy,
-      #pulseaudio,
+      #wireplumber,
       #workspaces,
       #clock {
         background-color: rgba(1.0, 1.0, 1.0, 0.5);

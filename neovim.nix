@@ -21,6 +21,16 @@
       cmp-path
       cmp-cmdline
       nvim-cmp
+      nvim-autopairs
+
+      # tpope stuff
+      vim-sensible
+      vim-unimpaired
+      vim-fugitive
+      vim-surround
+      vim-eunuch
+      vim-repeat
+      vim-commentary
 
       # seamless navigation between vim and tmux panes
       vim-tmux-navigator
@@ -28,6 +38,7 @@
       # snippets
       luasnip
       cmp_luasnip
+      friendly-snippets
 
       # file browser and other navigation stuff
       nerdtree

@@ -19,6 +19,7 @@
       hardinfo2
       zotero
       libreoffice
+      spotify
 
       # tui or gui-from-terminal
       pinentry-curses # password entry for gpg-agent
@@ -31,23 +32,43 @@
       killall
       jupyter
       rustup # we still use shell.nix like a good nix user, this is just for LSP
+      ffmpeg
+      vulkan-tools
 
       # other utility
       nil # Nix language server
+      wl-clipboard-rs
+      texlive.combined.scheme-full
 
       # fonts
       source-code-pro
+      nerd-fonts.symbols-only
+      nerd-fonts.fira-code
     ];
 
     username = "bastian";
     homeDirectory = "/home/bastian";
     stateVersion = "25.05";
+
+    sessionVariables = {
+      INPUT_METHOD  = "fcitx";
+      GTK_IM_MODULE = "fcitx";
+      QT_IM_MODULE  = "fcitx";
+      XMODIFIERS    = "@im=fcitx";
+      XIM_SERVERS   = "fcitx";
+    };
   };
+
 
   services = {
     dunst = {
       enable = true;
     }; 
+
+    flameshot = {
+      enable = true;
+      package = pkgs.flameshot.override { enableWlrSupport = true; };
+    };
 
     easyeffects = {
       enable = true;
@@ -90,15 +111,19 @@
       '';
     };
 
+    ripgrep-all = {
+      enable = true;
+    };
+
+    ripgrep = {
+      enable = true;
+    };
+
     yt-dlp = {
       enable = true;
     };
 
     hyprlock = {
-      enable = true;
-    };
-
-    texlive = {
       enable = true;
     };
 
@@ -161,6 +186,19 @@
 
     spotify-player = {
       enable = true;
+    };
+  };
+  
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      addons = with pkgs; [
+        fcitx5-mozc
+        fcitx5-gtk
+        fcitx5-configtool
+      ];
+      waylandFrontend = true;
     };
   };
 }
