@@ -9,7 +9,14 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
-  fonts.fontconfig.enable = lib.mkForce true;
+  fonts.fontconfig = {
+    enable = lib.mkForce true;
+    defaultFonts = {
+      serif = [ "DejaVu Serif" "Noto Serif CJK JP" ];
+      sansSerif = [ "DejaVu Sans" "Noto Sans CJK JP" ];
+      monospace = [ "Source Code Pro" "Noto Sans Mono CJK JP" ];
+    };
+  };
 
   home = {
     packages = with pkgs; [
@@ -42,6 +49,9 @@
 
       # fonts
       source-code-pro
+      ipafont
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
       nerd-fonts.symbols-only
       nerd-fonts.fira-code
     ];
@@ -199,6 +209,23 @@
         fcitx5-configtool
       ];
       waylandFrontend = true;
+      settings = {
+        inputMethod = {
+          GroupOrder."0" = "Default";
+          "Groups/0" = {
+            Name = "Default";
+            "Default Layout" = "jp";
+            DefaultIM = "mozc";
+          };
+          "Groups/0/Items/0".Name = "keyboard-jp";
+          "Groups/0/Items/1".Name = "mozc";
+        };
+        globalOptions = {
+          Hotkey = {
+            NextInputMethod = "Super+space";
+          };
+        };
+      };
     };
   };
 }

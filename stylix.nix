@@ -16,24 +16,24 @@
     };
     fonts = {
       serif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Serif";
-    };
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Serif";
+      };
 
-    sansSerif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Sans";
-    };
+      sansSerif = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Sans";
+      };
 
-    monospace = {
-      package = pkgs.dejavu_fonts;
-      name = "Source Code Pro";
-    };
+      monospace = {
+        package = pkgs.dejavu_fonts;
+        name = "Source Code Pro";
+      };
 
-    emoji = {
-      package = pkgs.noto-fonts-emoji;
-      name = "Noto Color Emoji";
-    };
+      emoji = {
+        package = pkgs.noto-fonts-emoji;
+        name = "Noto Color Emoji";
+      };
     };
   };
 }
