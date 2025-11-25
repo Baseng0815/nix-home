@@ -27,6 +27,8 @@
       zotero
       libreoffice
       spotify
+      pavucontrol
+      ansel
 
       # tui or gui-from-terminal
       pinentry-curses # password entry for gpg-agent
@@ -41,11 +43,14 @@
       rustup # we still use shell.nix like a good nix user, this is just for LSP
       ffmpeg
       vulkan-tools
+      zip
+      unzip
 
       # other utility
       nil # Nix language server
       wl-clipboard-rs
       texlive.combined.scheme-full
+      nfs-utils
 
       # fonts
       source-code-pro
@@ -217,12 +222,13 @@
             "Default Layout" = "jp";
             DefaultIM = "mozc";
           };
-          "Groups/0/Items/0".Name = "keyboard-jp";
+          "Groups/0/Items/0".Name = "keyboard-us";
           "Groups/0/Items/1".Name = "mozc";
         };
         globalOptions = {
           Hotkey = {
             NextInputMethod = "Super+space";
+            TriggerInputMethod = "";
           };
         };
       };

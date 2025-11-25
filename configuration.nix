@@ -29,6 +29,7 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "nfs" ];
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
@@ -206,6 +207,10 @@
       wireplumber = {
         enable = true;
       };
+    };
+
+    rpcbind = {
+      enable = true;
     };
   };
 
