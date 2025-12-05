@@ -22,7 +22,7 @@
     packages = with pkgs; [
       # gui
       jetbrains-toolbox
-      brave
+      firefox
       hardinfo2
       zotero
       libreoffice
@@ -168,7 +168,7 @@
       userEmail = "bastian.engel00@gmail.com";
       userName = "Bastian Engel";
       signing = {
-        key = "42E899B7DC869CD8";
+        key = "0xCADCBA90F60269CF";
         signByDefault = true;
       };
     };
@@ -179,6 +179,20 @@
 
     alacritty = {
       enable = true;
+      settings = {
+        keyboard.bindings = [
+          {
+            key = "J";
+            mods = "Control|Shift";
+            action = "ScrollPageDown";
+          }
+          {
+            key = "K";
+            mods = "Control|Shift";
+            action = "ScrollPageUp";
+          }
+        ];
+      };
     };
 
     rofi = {

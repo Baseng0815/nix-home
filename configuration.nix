@@ -11,7 +11,7 @@
     ];
 
   hardware = {
-    opengl.enable = true;
+    graphics.enable = true;
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -21,6 +21,11 @@
         };
       };
     };
+    #nvidia = {
+    #  modesetting.enable = true;
+    #  open = false;
+    #  nvidiaSettings = true;
+    #};
   };
 
   # Bootloader.
