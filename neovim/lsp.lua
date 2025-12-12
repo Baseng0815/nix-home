@@ -34,7 +34,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-require('lspconfig').rust_analyzer.setup {
+
+vim.lsp.config('clangd', {
+  capabilities = lsp_capabilities
+})
+
+vim.lsp.config('rust_analyzer', {
     capabilities = lsp_capabilities,
     settings = {
         ["rust-analyzer"] = {
@@ -53,17 +58,20 @@ require('lspconfig').rust_analyzer.setup {
             },
         },
     }
-}
+})
 
-require('lspconfig').clangd.setup {
-    capabilities = lsp_capabilities,
-    settings = { }
-}
+vim.lsp.config('nil_ls', {
+  capabilities = lsp_capabilities
+})
 
-require('lspconfig').nil_ls.setup {
-    capabilities = lsp_capabilities,
-    settings = { }
-}
+vim.lsp.config('hls', {
+  capabilities = lsp_capabilities
+})
+
+vim.lsp.enable('clangd')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('nil_ls')
+vim.lsp.enable('hls')
 
 require('luasnip.loaders.from_vscode').lazy_load()
 require("luasnip.loaders.from_snipmate").lazy_load()

@@ -51,6 +51,7 @@
       wl-clipboard-rs
       texlive.combined.scheme-full
       nfs-utils
+      # zsh-powerlevel10k
 
       # fonts
       source-code-pro
@@ -116,6 +117,8 @@
 
         source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh	
         source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        source ~/.p10k.zsh
 
         alias lg=lazygit
         alias v=nvim
