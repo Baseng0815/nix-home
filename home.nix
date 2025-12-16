@@ -129,6 +129,26 @@
       '';
     };
 
+    ssh = {
+      enable = true;
+      extraConfig = ''
+      Host github.com
+        Hostname github.com
+        IdentityFile ~/.ssh/id_ed25519.github.com
+        IdentitiesOnly yes
+        AddKeysToAgent yes
+      Host gitlab.cc-asp.fraunhofer.de
+        Hostname gitlab.cc-asp.fraunhofer.de
+        IdentityFile ~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de
+        IdentitiesOnly yes
+        AddKeysToAgent yes
+        '';
+    };
+
+    nnn = {
+      enable = true;
+    };
+
     ripgrep-all = {
       enable = true;
     };
