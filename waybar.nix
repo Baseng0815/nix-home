@@ -11,7 +11,6 @@
       mainBar = {
         layer = "top";
         position = "top";
-        output = [ "DP-4" "DP-6" ];
 
         modules-center = [ "clock" ];
 

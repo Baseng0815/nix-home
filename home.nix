@@ -6,6 +6,7 @@
     ./waybar.nix
     ./neovim.nix
     ./stylix.nix
+    ./device-specific/laptop-01.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -29,6 +30,7 @@
       spotify
       pavucontrol
       ansel
+      steam
 
       # tui or gui-from-terminal
       pinentry-curses # password entry for gpg-agent
@@ -131,18 +133,18 @@
 
     ssh = {
       enable = true;
-      extraConfig = ''
-      Host github.com
-        Hostname github.com
-        IdentityFile ~/.ssh/id_ed25519.github.com
-        IdentitiesOnly yes
-        AddKeysToAgent yes
-      Host gitlab.cc-asp.fraunhofer.de
-        Hostname gitlab.cc-asp.fraunhofer.de
-        IdentityFile ~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de
-        IdentitiesOnly yes
-        AddKeysToAgent yes
-        '';
+      matchBlocks = {
+        "github.com" = {
+          hostname = "github.com";
+          identityFile = "~/.ssh/id_ed25519.github.com";
+          addKeysToAgent = "yes";
+        };
+        "gitlab.cc-asp.fraunhofer.de" = {
+          hostname = "gitlab.cc-asp.fraunhofer.de";
+          identityFile = "~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de";
+          addKeysToAgent = "yes";
+        };
+      };
     };
 
     nnn = {
@@ -188,8 +190,12 @@
 
     git = {
       enable = true;
-      userEmail = "bastian.engel00@gmail.com";
-      userName = "Bastian Engel";
+      settings = {
+        user = {
+        email = "bastian.engel00@gmail.com";
+        name = "Bastian Engel";
+        };
+      };
       signing = {
         key = "0xCADCBA90F60269CF";
         signByDefault = true;
@@ -246,21 +252,14 @@
     type = "fcitx5";
     fcitx5 = {
       addons = with pkgs; [
-        fcitx5-mozc
         fcitx5-gtk
-        fcitx5-configtool
+        qt6Packages.fcitx5-configtool
       ];
       waylandFrontend = true;
       settings = {
         inputMethod = {
           GroupOrder."0" = "Default";
-          "Groups/0" = {
-            Name = "Default";
-            "Default Layout" = "jp";
-            DefaultIM = "mozc";
-          };
           "Groups/0/Items/0".Name = "keyboard-us";
-          "Groups/0/Items/1".Name = "mozc";
         };
         globalOptions = {
           Hotkey = {

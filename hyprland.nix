@@ -73,9 +73,5 @@
         repeat_delay = 200;
       };
     };
-
-    extraConfig = ''
-      monitor=,highres,auto,1
-    '';
   };
 }
