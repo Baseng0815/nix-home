@@ -22,6 +22,8 @@
       bind = [
         "$mod SHIFT,RETURN,exec,alacritty"
         "$mod,p,exec,rofi -show drun -display-drun \"\""
+        "META,l,exec,hyprlock"
+        "META SHIFT,l,exec,systemctl suspend && hyprlock"
         "$mod,w,killactive"
         "$mod SHIFT,w,forcekillactive"
         "$mod,Space,togglefloating"

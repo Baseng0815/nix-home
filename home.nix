@@ -31,6 +31,7 @@
       pavucontrol
       ansel
       steam
+      gimp2
 
       # tui or gui-from-terminal
       pinentry-curses # password entry for gpg-agent
@@ -42,7 +43,6 @@
       mpv
       killall
       jupyter
-      rustup # we still use shell.nix like a good nix user, this is just for LSP
       ffmpeg
       vulkan-tools
       zip
