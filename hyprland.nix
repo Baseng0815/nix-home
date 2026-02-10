@@ -13,10 +13,24 @@
         layout = "master";
       };
 
+      cursor = {
+        inactive_timeout = 3;
+      };
+        
+
       # https://wiki.hypr.land/Configuring/Animations/
       animations = {
         enabled = false;
       };
+
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
+      ];
+
+      bindc = [
+        "$mod, mouse:272, togglefloating"
+      ];
 
       # https://wiki.hypr.land/Configuring/Binds/
       bind = [
