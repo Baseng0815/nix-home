@@ -11,6 +11,8 @@
 
       general = {
         layout = "master";
+        gaps_in = 0;
+        gaps_out = 0;
       };
 
       cursor = {

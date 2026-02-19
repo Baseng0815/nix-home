@@ -45,6 +45,10 @@
       fzf-lua
       telescope-nvim
       telescope-ui-select-nvim
+      telescope-symbols-nvim
+
+      # let's see if this is worth
+      multicursor-nvim
     ];
   };
 }
