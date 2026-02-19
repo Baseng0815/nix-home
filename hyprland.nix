@@ -36,6 +36,7 @@
 
       # https://wiki.hypr.land/Configuring/Binds/
       bind = [
+        "$mod,Print,exec,hyprshot --mode region"
         "$mod SHIFT,RETURN,exec,alacritty"
         "$mod,p,exec,rofi -show drun -display-drun \"\""
         "META,l,exec,hyprlock"
