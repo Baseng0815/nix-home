@@ -68,10 +68,15 @@ vim.lsp.config('hls', {
   capabilities = lsp_capabilities
 })
 
+vim.lsp.config('cssls', {
+  capabilities = lsp_capabilities
+})
+
 vim.lsp.enable('clangd')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('nil_ls')
 vim.lsp.enable('hls')
+vim.lsp.enable('cssls')
 
 require('luasnip.loaders.from_vscode').lazy_load()
 require("luasnip.loaders.from_snipmate").lazy_load()
