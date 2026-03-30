@@ -2,6 +2,15 @@ local builtin = require('telescope.builtin')
 
 vim.diagnostic.config { virtual_text = true }
 
+-- TODO this is so fucking stupid but silent = true, pcall etc. don't work. Checking
+-- the keybinds also lists them as enabled but it always throws an error so we must
+-- do this stupid clanker-generated shit.
+local function safe_unmap(mode, key)
+  if vim.fn.mapcheck(key, mode) ~= '' then
+    vim.keymap.del(mode, key, opts)
+  end
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
     desc = 'LSP actions',
     callback = function(event)
@@ -9,7 +18,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local opts = { buffer = event.buf }
+        local opts = { buffer = event.buf, silent = true }
+        -- unmap default global mappings starting with gr
+        safe_unmap('x', 'gra')
+        safe_unmap('n', 'gra')
+        safe_unmap('n', 'gri')
+        safe_unmap('n', 'grn')
+        safe_unmap('n', 'grr')
+        safe_unmap('n', 'grt')
+
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
         vim.keymap.set('n', 'gn', vim.lsp.buf.rename, opts)

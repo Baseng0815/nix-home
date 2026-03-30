@@ -11,15 +11,32 @@
 
       general = {
         layout = "master";
+        gaps_in = 0;
+        gaps_out = 0;
       };
+
+      cursor = {
+        inactive_timeout = 3;
+      };
+        
 
       # https://wiki.hypr.land/Configuring/Animations/
       animations = {
         enabled = false;
       };
 
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
+      ];
+
+      bindc = [
+        "$mod, mouse:272, togglefloating"
+      ];
+
       # https://wiki.hypr.land/Configuring/Binds/
       bind = [
+        "$mod,Print,exec,hyprshot --mode region"
         "$mod SHIFT,RETURN,exec,alacritty"
         "$mod,p,exec,rofi -show drun -display-drun \"\""
         "META,l,exec,hyprlock"

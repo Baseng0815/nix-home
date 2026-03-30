@@ -83,6 +83,10 @@
       enable = true;
     }; 
 
+    mpris-proxy = {
+      enable = true;
+    };
+
     flameshot = {
       enable = true;
       package = pkgs.flameshot.override { enableWlrSupport = true; };
@@ -129,6 +133,10 @@
         bindkey -M vicmd '^R' fzf-history-widget
         bindkey '^@' autosuggest-accept
       '';
+    };
+
+    hyprshot = {
+      enable = true;
     };
 
     ssh = {
@@ -209,6 +217,7 @@
     alacritty = {
       enable = true;
       settings = {
+        scrolling.history = 100000;
         keyboard.bindings = [
           {
             key = "J";

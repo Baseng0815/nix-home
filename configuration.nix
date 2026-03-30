@@ -13,6 +13,7 @@
   hardware = {
     graphics.enable = true;
     graphics.enable32Bit = true;
+    enableAllFirmware = true;
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -33,6 +34,12 @@
   boot.loader.grub.useOSProber = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "nfs" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.evdi ];
+  boot.initrd = {
+    kernelModules = [
+      "evdi"
+    ];
+  };
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
@@ -161,6 +168,7 @@
   environment.systemPackages = with pkgs; [
     # only systemwide tools; user applications go into the user config
     home-manager
+    displaylink
     git
     gnumake
     vim
@@ -182,6 +190,8 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services = {
+    xserver.videoDrivers = [ "displaylink" ];
+
     actkbd = {
       enable = true;
       bindings = [
@@ -213,6 +223,10 @@
     };
 
     rpcbind = {
+      enable = true;
+    };
+
+    blueman = {
       enable = true;
     };
   };
