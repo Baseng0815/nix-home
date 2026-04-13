@@ -6,7 +6,6 @@
     ./waybar.nix
     ./neovim.nix
     ./stylix.nix
-    ./device-specific/laptop-01.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -32,6 +31,9 @@
       ansel
       steam
       gimp2
+      nautilus
+      kdePackages.dolphin
+      qpwgraph # pipewire patchbay
 
       # tui or gui-from-terminal
       pinentry-curses # password entry for gpg-agent
@@ -90,6 +92,10 @@
     flameshot = {
       enable = true;
       package = pkgs.flameshot.override { enableWlrSupport = true; };
+
+      settings.General = {
+        useGrimAdapter = true;
+      };
     };
 
     easyeffects = {
@@ -253,6 +259,11 @@
 
     spotify-player = {
       enable = true;
+    };
+
+    java = {
+      enable = true;
+      package = pkgs.jdk25_headless;
     };
   };
   

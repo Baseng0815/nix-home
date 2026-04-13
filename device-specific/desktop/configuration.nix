@@ -5,11 +5,6 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-
   hardware = {
     graphics.enable = true;
     graphics.enable32Bit = true;
@@ -20,11 +15,12 @@
       settings = {
       };
     };
-    #nvidia = {
-    #  modesetting.enable = true;
-    #  open = false;
-    #  nvidiaSettings = true;
-    #};
+    nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      open = true;
+      modesetting.enable = true;
+      nvidiaSettings = true;
+    };
   };
 
   # Bootloader.
@@ -160,15 +156,11 @@
     packages = with pkgs; [];
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # only systemwide tools; user applications go into the user config
     home-manager
-    displaylink
     git
     gnumake
     vim
@@ -190,8 +182,6 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services = {
-    xserver.videoDrivers = [ "displaylink" ];
-
     actkbd = {
       enable = true;
       bindings = [
@@ -209,6 +199,14 @@
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
+      package = pkgs.kdePackages.sddm;
+      extraPackages = with pkgs; [
+        kdePackages.qtbase
+        kdePackages.qtsvg
+        kdePackages.qtmultimedia
+        kdePackages.qtvirtualkeyboard
+      ];
+      theme = "minesddm";
     };
 
     pipewire = {
@@ -229,6 +227,8 @@
     blueman = {
       enable = true;
     };
+
+    xserver.videoDrivers = [ "nvidia" ];
   };
 
   # Open ports in the firewall.
