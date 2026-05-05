@@ -135,7 +135,7 @@
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source ~/.p10k.zsh
 
-        alias lg=lazygit
+        alias la=lazygit
         alias v=nvim
 
         bindkey -M viins '^R' fzf-history-widget
@@ -237,6 +237,11 @@
             key = "K";
             mods = "Control|Shift";
             action = "ScrollPageUp";
+          }
+          {
+            key = "N";
+            mods = "Control|Shift";
+            action = "SpawnNewInstance";
           }
         ];
       };
