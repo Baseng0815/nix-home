@@ -30,9 +30,10 @@
       pavucontrol
       ansel
       steam
+      xfce.thunar
+      xfce.tumbler
       gimp2
       nautilus
-      kdePackages.dolphin
       qpwgraph # pipewire patchbay
 
       # tui or gui-from-terminal
@@ -40,7 +41,7 @@
       zsh-fzf-tab
       zsh-fzf-history-search
       zsh-vi-mode
-      sxiv
+      nsxiv
       zathura
       mpv
       killall
@@ -55,6 +56,8 @@
       wl-clipboard-rs
       texlive.combined.scheme-full
       nfs-utils
+      man-pages
+      man-pages-posix
       # zsh-powerlevel10k
 
       # fonts
@@ -264,6 +267,22 @@
     java = {
       enable = true;
       package = pkgs.jdk25_headless;
+    };
+  };
+
+  xdg = {
+    mime.enable = true;
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "image/png" = ["nsxiv.desktop"];
+        "image/jpg" = ["nsxiv.desktop"];
+        "image/jpeg" = ["nsxiv.desktop"];
+        "application/pdf" = ["org.pwmt.zathura.desktop"];
+        "video/mp4" = ["mpv.desktop"];
+        "video/mpeg" = ["mpv.desktop"];
+        "video/webm" = ["mpv.desktop"];
+      };
     };
   };
   

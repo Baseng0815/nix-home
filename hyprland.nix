@@ -36,11 +36,13 @@
 
       # https://wiki.hypr.land/Configuring/Binds/
       bind = [
-        "$mod,Print,exec,hyprshot --mode region"
+        "$mod,Print,exec,hyprshot --mode region --clipboard-only"
+        "$mod SHIFT,Print,exec,hyprshot --mode region"
         "$mod SHIFT,RETURN,exec,alacritty"
         "$mod,p,exec,rofi -show drun -display-drun \"\""
         "META,l,exec,hyprlock"
         "META SHIFT,l,exec,systemctl suspend && hyprlock"
+        "META,e,exec,thunar"
         "$mod,w,killactive"
         "$mod SHIFT,w,forcekillactive"
         "$mod,Space,togglefloating"
@@ -76,8 +78,8 @@
         "$mod,k,layoutmsg,cycleprev"
         "$mod,i,layoutmsg,addmaster"
         "$mod,d,layoutmsg,removemaster"
-        "$mod,h,layoutmsg,mfact -0.1"
-        "$mod,l,layoutmsg,mfact +0.1"
+        "$mod,h,layoutmsg,mfact -0.05"
+        "$mod,l,layoutmsg,mfact +0.05"
         "$mod,Return,layoutmsg,swapwithmaster master"
         "$mod SHIFT,up,layoutmsg,orientationtop"
         "$mod SHIFT,right,layoutmsg,orientationright"

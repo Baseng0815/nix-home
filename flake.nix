@@ -37,8 +37,6 @@
         inherit pkgs;
         modules = [
           minesddm.nixosModules.default
-          ./device-specific/desktop/hardware.nix
-          ./device-specific/desktop/configuration.nix
         ];
       };
 
@@ -47,7 +45,7 @@
         modules = [
           stylix.homeModules.stylix
           ./home.nix
-          ./device-specific/desktop/home.nix
+          ./device-specific/laptop-01.nix
         ];
       };
     };
