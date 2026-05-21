@@ -323,6 +323,14 @@
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
+      package = pkgs.kdePackages.sddm;
+      extraPackages = with pkgs; [
+        kdePackages.qtbase
+        kdePackages.qtsvg
+        kdePackages.qtmultimedia
+        kdePackages.qtvirtualkeyboard
+      ];
+      theme = "minesddm";
     };
 
     pipewire = {
