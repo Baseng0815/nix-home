@@ -12,9 +12,18 @@
   fonts.fontconfig = {
     enable = lib.mkForce true;
     defaultFonts = {
-      serif = [ "DejaVu Serif" "Noto Serif CJK JP" ];
-      sansSerif = [ "DejaVu Sans" "Noto Sans CJK JP" ];
-      monospace = [ "Source Code Pro" "Noto Sans Mono CJK JP" ];
+      serif = [
+        "DejaVu Serif"
+        "Noto Serif CJK JP"
+      ];
+      sansSerif = [
+        "DejaVu Sans"
+        "Noto Sans CJK JP"
+      ];
+      monospace = [
+        "Source Code Pro"
+        "Noto Sans Mono CJK JP"
+      ];
     };
   };
 
@@ -50,6 +59,7 @@
       vulkan-tools
       zip
       unzip
+      wireguard-tools
 
       # other utility
       nil # Nix language server
@@ -74,19 +84,18 @@
     stateVersion = "25.05";
 
     sessionVariables = {
-      INPUT_METHOD  = "fcitx";
+      INPUT_METHOD = "fcitx";
       GTK_IM_MODULE = "fcitx";
-      QT_IM_MODULE  = "fcitx";
-      XMODIFIERS    = "@im=fcitx";
-      XIM_SERVERS   = "fcitx";
+      QT_IM_MODULE = "fcitx";
+      XMODIFIERS = "@im=fcitx";
+      XIM_SERVERS = "fcitx";
     };
   };
-
 
   services = {
     dunst = {
       enable = true;
-    }; 
+    };
 
     mpris-proxy = {
       enable = true;
@@ -111,7 +120,7 @@
       maxCacheTtl = 36000;
       defaultCacheTtlSsh = 36000;
       enableSshSupport = true;
-      pinentry.package = pkgs.pinentry-curses;
+      pinentry.package = pkgs.pinentry-qt;
     };
   };
 
@@ -142,6 +151,10 @@
         bindkey -M vicmd '^R' fzf-history-widget
         bindkey '^@' autosuggest-accept
       '';
+    };
+
+    obs-studio = {
+      enable = true;
     };
 
     hyprshot = {
@@ -209,8 +222,8 @@
       enable = true;
       settings = {
         user = {
-        email = "bastian.engel00@gmail.com";
-        name = "Bastian Engel";
+          email = "bastian.engel00@gmail.com";
+          name = "Bastian Engel";
         };
       };
       signing = {
@@ -280,17 +293,17 @@
     mimeApps = {
       enable = true;
       defaultApplications = {
-        "image/png" = ["nsxiv.desktop"];
-        "image/jpg" = ["nsxiv.desktop"];
-        "image/jpeg" = ["nsxiv.desktop"];
-        "application/pdf" = ["org.pwmt.zathura.desktop"];
-        "video/mp4" = ["mpv.desktop"];
-        "video/mpeg" = ["mpv.desktop"];
-        "video/webm" = ["mpv.desktop"];
+        "image/png" = [ "nsxiv.desktop" ];
+        "image/jpg" = [ "nsxiv.desktop" ];
+        "image/jpeg" = [ "nsxiv.desktop" ];
+        "application/pdf" = [ "org.pwmt.zathura.desktop" ];
+        "video/mp4" = [ "mpv.desktop" ];
+        "video/mpeg" = [ "mpv.desktop" ];
+        "video/webm" = [ "mpv.desktop" ];
       };
     };
   };
-  
+
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
