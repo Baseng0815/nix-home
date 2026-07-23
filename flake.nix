@@ -3,16 +3,16 @@
 
   inputs = {
     nixpkgs ={
-      url = "nixpkgs/nixos-25.11";
+      url = "nixpkgs/nixos-unstable";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     stylix = {
-      url = "github:nix-community/stylix/release-25.11";
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -37,6 +37,8 @@
         inherit pkgs;
         modules = [
           minesddm.nixosModules.default
+          ./device-specific/laptop-01/hardware.nix
+          ./device-specific/laptop-01/configuration.nix
         ];
       };
 
@@ -45,7 +47,7 @@
         modules = [
           stylix.homeModules.stylix
           ./home.nix
-          ./device-specific/laptop-01.nix
+          ./device-specific/laptop-01/home.nix
         ];
       };
     };
