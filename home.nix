@@ -43,6 +43,7 @@
       xfce.tumbler
       gimp2
       nautilus
+      beekeeper-studio # sql client
       qpwgraph # pipewire patchbay
 
       # tui or gui-from-terminal
@@ -60,14 +61,39 @@
       zip
       unzip
       wireguard-tools
+      brightnessctl
+
+      # network debugging
+      traceroute
+      mtr # traceroute + ping in one
+      dnsutils # dig, nslookup
+      # wireshark comes from programs.wireshark in the system config
+      # (needs the setcap dumpcap wrapper for non-root capture)
+      tcpdump
+      nmap # port scanner, also provides ncat
+      netcat-openbsd
+      socat
+      iperf3 # throughput testing
+      ethtool
+      whois
+      ipcalc
+      iftop # bandwidth per connection
+      nethogs # bandwidth per process
+      arp-scan
+      ngrep
+      lsof
+      speedtest-cli
 
       # other utility
+      nodejs
       nil # Nix language server
+      texlab # LaTeX language server
       wl-clipboard-rs
       texlive.combined.scheme-full
       nfs-utils
       man-pages
       man-pages-posix
+      sshfs
       # zsh-powerlevel10k
 
       # fonts
@@ -84,6 +110,7 @@
     stateVersion = "25.05";
 
     sessionVariables = {
+      DIRENV_LOG_FORMAT = "";
       INPUT_METHOD = "fcitx";
       GTK_IM_MODULE = "fcitx";
       QT_IM_MODULE = "fcitx";
@@ -174,6 +201,12 @@
           identityFile = "~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de";
           addKeysToAgent = "yes";
         };
+        "ki1-vm" = {
+          hostname = "ki1-vm";
+          identityFile = "~/.ssh/id_ed25519.ki1-vm";
+          addKeysToAgent = "yes";
+          user = "bas39150";
+        };
       };
     };
 
@@ -214,7 +247,16 @@
       enableZshIntegration = true;
     };
 
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
     vesktop = {
+      enable = true;
+    };
+
+    claude-code = {
       enable = true;
     };
 
@@ -310,19 +352,35 @@
     fcitx5 = {
       addons = with pkgs; [
         fcitx5-gtk
+        fcitx5-mozc
         qt6Packages.fcitx5-configtool
       ];
       waylandFrontend = true;
       settings = {
         inputMethod = {
           GroupOrder."0" = "Default";
+          "Groups/0" = {
+            Name = "Default";
+            "Default Layout" = "us";
+            DefaultIM = "keyboard-us";
+          };
           "Groups/0/Items/0".Name = "keyboard-us";
+          "Groups/0/Items/1".Name = "keyboard-de";
+          "Groups/0/Items/2".Name = "mozc";
         };
         globalOptions = {
           Hotkey = {
-            NextInputMethod = "Super+space";
-            TriggerInputMethod = "";
+            # Alt+` must be a strict on/off toggle (MS-IME style), never an
+            # enumeration through the whole group on repeated presses.
+            EnumerateWithTriggerKeys = false;
+            EnumerateSkipFirst = false;
           };
+          # MS-IME-style Alt+`: toggle between direct (keyboard-us, the
+          # group's first entry) and the last active IME (mozc) — i.e.
+          # romaji/alphanumeric vs. kana input.
+          "Hotkey/TriggerKeys"."0" = "Alt+grave";
+          # Meta+Space cycles English -> German -> Japanese.
+          "Hotkey/EnumerateForwardKeys"."0" = "Super+space";
         };
       };
     };
