@@ -17,6 +17,7 @@ vim.keymap.set('n', '<C-t>p', builtin.planets, {})
 vim.keymap.set('n', '<C-t>l', builtin.builtin, {})
 vim.keymap.set('n', '<C-t>g', builtin.live_grep, {})
 vim.keymap.set('n', '<C-t>c', builtin.command_history, {})
+vim.keymap.set('n', '<C-t>a', ':Git blame<CR>', { silent = true})
 
 require("telescope").setup {
     pickers = {

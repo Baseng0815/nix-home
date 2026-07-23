@@ -12,6 +12,7 @@
       ${builtins.readFile ./neovim/lsp.lua}
       ${builtins.readFile ./neovim/keybinds.lua}
       ${builtins.readFile ./neovim/telescope.lua}
+      ${builtins.readFile ./neovim/vimtex.lua}
     '';
     plugins = with pkgs.vimPlugins; [
       # lsp and completion stuff
@@ -35,6 +36,9 @@
       # seamless navigation between vim and tmux panes
       vim-tmux-navigator
 
+      # latex editing (compilation, zathura preview, motions)
+      vimtex
+
       # snippets
       luasnip
       cmp_luasnip
@@ -49,6 +53,7 @@
 
       # let's see if this is worth
       multicursor-nvim
+      diffview-nvim
     ];
   };
 }

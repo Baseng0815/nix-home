@@ -53,6 +53,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 vim.lsp.config('clangd', {
+  cmd = {
+    'clangd',
+    -- Query the nix-wrapped clang so libc++ include paths are discovered
+    -- instead of clangd's built-in defaults (which pick up libstdc++).
+    '--query-driver=/nix/store/*-clang-wrapper-*/bin/clang*',
+    '--background-index',
+  },
   capabilities = lsp_capabilities
 })
 
@@ -61,7 +68,7 @@ vim.lsp.config('rust_analyzer', {
     settings = {
         ["rust-analyzer"] = {
             checkOnSave = {
-                enable = true
+                enable = false
             },
             inlayHints = {
                 -- Enable inlay hints for function arguments, return types, and type annotations
@@ -89,11 +96,26 @@ vim.lsp.config('cssls', {
   capabilities = lsp_capabilities
 })
 
+vim.lsp.config('texlab', {
+  capabilities = lsp_capabilities,
+  settings = {
+    texlab = {
+      -- vimtex handles building/preview; texlab provides completion,
+      -- references, rename and chktex lints
+      chktex = {
+        onOpenAndSave = true,
+        onEdit = false,
+      },
+    },
+  },
+})
+
 vim.lsp.enable('clangd')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('nil_ls')
 vim.lsp.enable('hls')
 vim.lsp.enable('cssls')
+vim.lsp.enable('texlab')
 
 require('luasnip.loaders.from_vscode').lazy_load()
 require("luasnip.loaders.from_snipmate").lazy_load()
