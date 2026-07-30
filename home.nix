@@ -44,7 +44,9 @@
       gimp2
       nautilus
       beekeeper-studio # sql client
+      dbeaver-bin
       qpwgraph # pipewire patchbay
+      drawio
 
       # tui or gui-from-terminal
       pinentry-curses # password entry for gpg-agent
@@ -201,11 +203,16 @@
           identityFile = "~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de";
           addKeysToAgent = "yes";
         };
-        "ki1-vm" = {
-          hostname = "ki1-vm";
-          identityFile = "~/.ssh/id_ed25519.ki1-vm";
+        "gitlab.kit.edu" = {
+          hostname = "gitlab.kit.edu";
+          identityFile = "~/.ssh/id_ed25519.gitlab.kit.edu";
           addKeysToAgent = "yes";
+        };
+        "ki1-vm" = {
+          hostname = "172.16.120.21";
           user = "bas39150";
+          identityFile = "~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de";
+          addKeysToAgent = "yes";
         };
       };
     };
