@@ -22,7 +22,22 @@
         modules-left = [ "hyprland/workspaces" ];
 
         "hyprland/workspaces" = {
+          # One bar per monitor, each showing only its own monitor's tags.
+          all-outputs = false;
 
+          # hyprsplit gives the Nth monitor the global workspace ids
+          # N*9+1 .. N*9+9. Relabel them back to 1-9 so every bar shows
+          # dwm-style tag numbers rather than 10-18, 19-27, ...
+          format = "{icon}";
+          format-icons = builtins.listToAttrs (
+            builtins.concatMap (
+              mon:
+              builtins.genList (i: {
+                name = toString (mon * 9 + i + 1);
+                value = toString (i + 1);
+              }) 9
+            ) (lib.range 0 3)
+          );
         };
 
         modules-right = [ "cpu" "battery" "memory" "disk" "network" "privacy" "wireplumber" ];

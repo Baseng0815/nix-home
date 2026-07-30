@@ -5,9 +5,34 @@
     enable = true;
     xwayland.enable = true;
 
+    # dwm-style per-monitor workspaces. Each monitor owns its own set of 9,
+    # so ALT+1..9 always acts on the focused monitor instead of dragging a
+    # global workspace across screens.
+    #
+    # NOTE: home-manager loads plugins with `exec-once = hyprctl plugin load`,
+    # i.e. after the config is parsed and only at session start. A bare
+    # `hyprctl reload` does NOT re-load the plugin, so after switching you
+    # need either a fresh session or a manual `hyprctl plugin load`.
+    plugins = [ pkgs.hyprlandPlugins.hyprsplit ];
+
     # https://wiki.hypr.land/Configuring/Variables/
     settings = {
       "$mod" = "ALT";
+
+      # Monitor -> workspace-set assignment lives in device-specific/*/home.nix,
+      # since it has to name actual outputs.
+      plugin.hyprsplit = {
+        num_workspaces = 9;
+
+        # Off, so empty tags don't exist and therefore don't show up in waybar
+        # (dwm only draws tags that have clients or are selected). The tag ->
+        # monitor binding does not depend on this: hyprsplit's dispatchers always
+        # create workspaces on the focused monitor, and ensureGoodWorkspaces()
+        # re-homes stragglers on every config reload / monitor hotplug
+        # regardless of this flag. All it controls is pre-creating and pinning
+        # all 9 per monitor.
+        persistent_workspaces = false;
+      };
 
       general = {
         layout = "master";
@@ -50,28 +75,21 @@
         "$mod,m,fullscreen"
         "$mod,O,fullscreen"
 
-        "$mod,1,workspace,1"
-        "$mod,2,workspace,2"
-        "$mod,3,workspace,3"
-        "$mod,4,workspace,4"
-        "$mod,5,workspace,5"
-        "$mod,6,workspace,6"
-        "$mod,7,workspace,7"
-        "$mod,8,workspace,8"
-        "$mod,9,workspace,9"
+        # dwm focusmon / tagmon. The trailing `silent` is what makes tagmon
+        # behave like dwm's: without it Hyprland calls rawMonitorFocus +
+        # changeWorkspace + warpCursor, dragging your focus and cursor to the
+        # other monitor along with the window.
+        "$mod,comma,focusmonitor,-1"
+        "$mod,period,focusmonitor,+1"
+        "$mod SHIFT,comma,movewindow,mon:-1 silent"
+        "$mod SHIFT,period,movewindow,mon:+1 silent"
 
-        "$mod SHIFT,1,movetoworkspace,1"
-        "$mod SHIFT,2,movetoworkspace,2"
-        "$mod SHIFT,3,movetoworkspace,3"
-        "$mod SHIFT,4,movetoworkspace,4"
-        "$mod SHIFT,5,movetoworkspace,5"
-        "$mod SHIFT,6,movetoworkspace,6"
-        "$mod SHIFT,7,movetoworkspace,7"
-        "$mod SHIFT,8,movetoworkspace,8"
-        "$mod SHIFT,9,movetoworkspace,9"
+        # Reclaim windows stranded on the workspaces of an unplugged monitor.
+        "$mod,g,split:grabroguewindows"
 
         "$mod,Tab,workspace,previous"
-        "$mod SHIFT,Tab,movetoworkspace,previous"
+        # ...silent, so this doesn't follow the window either.
+        "$mod SHIFT,Tab,movetoworkspacesilent,previous"
 
         # https://wiki.hypr.land/Configuring/Master-Layout/
         "$mod,j,layoutmsg,cyclenext"
@@ -86,7 +104,13 @@
         "$mod SHIFT,left,layoutmsg,orientationleft"
         "$mod SHIFT,down,layoutmsg,orientationbottom"
         "$mod,c,layoutmsg,orientationcenter"
-      ];
+      ]
+      # dwm tags: $mod+N views tag N on the focused monitor, $mod+SHIFT+N sends
+      # the focused window to tag N without following it.
+      ++ builtins.concatMap (i: [
+        "$mod,${toString i},split:workspace,${toString i}"
+        "$mod SHIFT,${toString i},split:movetoworkspacesilent,${toString i}"
+      ]) (lib.range 1 9);
 
       input = {
         kb_options = "ctrl:nocaps";
