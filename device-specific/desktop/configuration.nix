@@ -23,6 +23,10 @@
     };
   };
 
+  virtualisation.docker = {
+    enable = true;
+  };
+
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
@@ -76,7 +80,6 @@
 
   programs = {
     zsh.enable = true;
-    light.enable = true;
 
     hyprland = {
       enable = true;
@@ -151,7 +154,7 @@
     isNormalUser = true;
     home = "/home/bastian";
     description = "Bastian Engel";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [];
   };
