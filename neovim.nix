@@ -1,5 +1,13 @@
 { lib, pkgs, ... }:
 
+let
+  # Citation completion from the Zotero library, see neovim/zotero-nvim.
+  zotero-nvim = pkgs.vimUtils.buildVimPlugin {
+    pname = "zotero-nvim";
+    version = "0.1.0";
+    src = ./neovim/zotero-nvim;
+  };
+in
 {
   programs.neovim = {
     enable = true;
@@ -13,8 +21,10 @@
       ${builtins.readFile ./neovim/keybinds.lua}
       ${builtins.readFile ./neovim/telescope.lua}
       ${builtins.readFile ./neovim/vimtex.lua}
+      ${builtins.readFile ./neovim/zotero.lua}
+      ${builtins.readFile ./neovim/obsidian.lua}
     '';
-    plugins = with pkgs.vimPlugins; [
+    plugins = [ zotero-nvim ] ++ (with pkgs.vimPlugins; [
       # lsp and completion stuff
       nvim-lspconfig
       cmp-nvim-lsp
@@ -39,6 +49,9 @@
       # latex editing (compilation, zathura preview, motions)
       vimtex
 
+      # obsidian vault editing (wiki links, backlinks, note search)
+      obsidian-nvim
+
       # snippets
       luasnip
       cmp_luasnip
@@ -54,6 +67,6 @@
       # let's see if this is worth
       multicursor-nvim
       diffview-nvim
-    ];
+    ]);
   };
 }

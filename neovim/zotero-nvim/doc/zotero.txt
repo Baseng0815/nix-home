@@ -1,0 +1,101 @@
+*zotero.txt*  Cite from Zotero, and keep the document's .bib in sync
+
+==============================================================================
+OVERVIEW                                                       *zotero-overview*
+
+Better BibTeX exports the whole Zotero library to one file (by default
+`~/Zotero/library.bib`). This plugin completes citation keys from that file
+inside |\cite| commands, and copies the entry you picked into the .bib the
+document actually loads.
+
+The result is that the project's bibliography contains exactly what is cited:
+it only ever grows, and Zotero cannot rewrite it behind your back.
+
+    Zotero --(Better BibTeX, "keep updated")--> ~/Zotero/library.bib
+                                                        |
+                                             completion reads it
+                                                        v
+                          \cite{...} --> references/library.bib (in git)
+
+==============================================================================
+SETUP                                                             *zotero-setup*
+
+>lua
+    require('zotero').setup({
+      library = '~/Zotero/library.bib',
+    })
+<
+Options:
+
+    library   Path to the Better BibTeX export of the library.
+              Default: `~/Zotero/library.bib`
+
+    bib       Path to write citations to. By default this is discovered from
+              the document's \addbibresource or \bibliography, which is
+              usually right. Set it only to override that.
+              Default: `nil`
+
+    tex_glob  Glob used to find the project's .tex files, relative to the
+              project root. Default: `**/*.tex`
+
+    ignore    Path fragments skipped while globbing, so build output does not
+              shadow the sources. Default: output, build, .git, _minted
+
+The project root is |vimtex|'s root when vimtex is loaded, otherwise the
+nearest directory containing `latexmkrc` or `.git`.
+
+==============================================================================
+COMPLETION                                                   *zotero-completion*
+
+The nvim-cmp source is named `zotero` and is registered for `tex` and
+`plaintex`. It only produces candidates inside the braces of a cite command:
+\cite, \parencite, \textcite, \autocite, \footcite, \nocite and friends, with
+or without a star or [prenote][postnote].
+
+Matching runs over the key, the author and the title, so all of these find the
+same paper: >
+
+    \cite{binosi        \cite{rainfuzz        \cite{heat-maps
+<
+Accepting a candidate inserts the key only, and appends the entry to the
+document's .bib if it is not there yet.
+
+When texlab is attached it already completes the keys present in the
+document's .bib, so this source hides those to avoid listing everything twice.
+What it offers is therefore exactly the citations that still need importing.
+Without texlab, it offers the whole library.
+
+==============================================================================
+COMMANDS                                                       *zotero-commands*
+
+                                                                   *:ZoteroCite*
+:ZoteroCite     Browse the library in a Telescope picker with the BibTeX entry
+                as preview. Inserts `\cite{key}`, or just the key when the
+                cursor is already inside a cite command, and imports the entry.
+                Falls back to |vim.ui.select()| without Telescope.
+
+                                                                   *:ZoteroSync*
+:ZoteroSync     Scan every .tex file in the project for cited keys and import
+                the ones missing from the bibliography. Use it after pasting
+                citations from elsewhere. Reports keys that are cited but not
+                in the Zotero library.
+
+                                                                    *:ZoteroBib*
+:ZoteroBib      Re-detect and print the .bib being written to. Run it after
+                adding an \addbibresource to a document that is already open.
+
+==============================================================================
+NOTES                                                             *zotero-notes*
+
+Nothing is ever removed from the bibliography, and existing entries are never
+rewritten -- an entry is only appended when its key is absent. Editing the
+.bib by hand is therefore safe.
+
+Files are reread when their mtime changes, so a Better BibTeX auto-export
+becomes visible without restarting Neovim.
+
+Citation keys must be stable, or the keys already in the document stop
+resolving. Pin them in Zotero (right click > Better BibTeX > Pin citation
+key) for anything cited.
+
+ vim:tw=78:ts=8:ft=help:norl:
