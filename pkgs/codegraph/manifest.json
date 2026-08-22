@@ -1,0 +1,7 @@
+{
+  "version": "1.5.0",
+  "platforms": {
+    "linux-x64": "2ba65e87a1210b706bb1e67d5e48b5fc4a1935e43dbb3fb5f31c5597840d2e58",
+    "linux-arm64": "9f17750aedf45d51f68caae39ed21d6e2a7290b2326e5c53f95a165918ebd1d8"
+  }
+}
