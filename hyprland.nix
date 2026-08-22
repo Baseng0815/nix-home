@@ -1,6 +1,75 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  # Two files home-manager deliberately does NOT own, sourced at the very end of
+  # hyprland.conf so they win over everything defined in Nix. This is what makes
+  # display changes possible without a rebuild:
+  #
+  #   monitors.conf  written by nwg-displays (its default output path). Do not
+  #                  hand-edit: saving from the GUI rewrites the whole file.
+  #   local.conf     hand-written per-location overrides that nwg-displays does
+  #                  not know about, e.g. hyprsplit's monitor_priority.
+  #
+  # Both are seeded empty on activation if absent, since Hyprland throws a config
+  # error for a `source` pointing at a missing file.
+  monitorsConf = "${config.xdg.configHome}/hypr/monitors.conf";
+  localConf = "${config.xdg.configHome}/hypr/local.conf";
+
+  # Mirror the focused monitor onto every other output, for presentations where
+  # the projector should show what the laptop panel shows. Runtime-only: `off`
+  # just reloads the config, which re-applies hyprland.conf + monitors.conf.
+  hypr-mirror = pkgs.writeShellApplication {
+    name = "hypr-mirror";
+    runtimeInputs = [
+      pkgs.jq
+      config.wayland.windowManager.hyprland.finalPackage
+    ];
+    text = ''
+      mode="''${1:-toggle}"
+      if [ "$mode" = toggle ]; then
+        if [ "$(hyprctl -j monitors | jq '[.[] | select(.mirrorOf != "none")] | length')" -gt 0 ]; then
+          mode=off
+        else
+          mode=on
+        fi
+      fi
+
+      case "$mode" in
+        off)
+          # A reload keeps plugins loaded, so hyprsplit survives this.
+          hyprctl reload
+          ;;
+        on)
+          src=$(hyprctl -j activeworkspace | jq -r '.monitor')
+          hyprctl -j monitors \
+            | jq -r --arg src "$src" '.[] | select(.name != $src) | .name' \
+            | while read -r mon; do
+                hyprctl keyword monitor "$mon,preferred,auto,1,mirror,$src"
+              done
+          ;;
+        *)
+          echo "usage: hypr-mirror [on|off|toggle]" >&2
+          exit 1
+          ;;
+      esac
+    '';
+  };
+in
 {
+  home.packages = [
+    pkgs.nwg-displays # GTK monitor layout editor, writes ${monitorsConf}
+    hypr-mirror
+  ];
+
+  home.activation.hyprMutableConfigs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    for f in ${monitorsConf} ${localConf}; do
+      if [ ! -e "$f" ]; then
+        run mkdir -p $VERBOSE_ARG "$(dirname "$f")"
+        run touch "$f"
+      fi
+    done
+  '';
+
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -15,9 +84,25 @@
     # need either a fresh session or a manual `hyprctl plugin load`.
     plugins = [ pkgs.hyprlandPlugins.hyprsplit ];
 
+    # Sourced from extraConfig rather than settings.source, because
+    # sourceFirst = true would otherwise hoist these to the top of the file,
+    # where the Nix-defined rules below would override them instead of the
+    # other way round. extraConfig is always appended last.
+    extraConfig = ''
+      source = ${monitorsConf}
+      source = ${localConf}
+    '';
+
     # https://wiki.hypr.land/Configuring/Variables/
     settings = {
       "$mod" = "ALT";
+
+      # Catch-all fallback: any output without a rule of its own comes up at its
+      # preferred mode, placed automatically to the right. This alone makes a
+      # projector or a strange conference-room screen work on hotplug with no
+      # config at all. Named defaults per machine live in
+      # device-specific/*/home.nix; both are overridden by ${monitorsConf}.
+      monitor = [ ",preferred,auto,1" ];
 
       # Monitor -> workspace-set assignment lives in device-specific/*/home.nix,
       # since it has to name actual outputs.
@@ -65,6 +150,8 @@
         "$mod SHIFT,Print,exec,hyprshot --mode region"
         "$mod SHIFT,RETURN,exec,alacritty"
         "$mod,p,exec,rofi -show drun -display-drun \"\""
+        "META,d,exec,nwg-displays"
+        "META,p,exec,hypr-mirror"
         "META,l,exec,hyprlock"
         "META SHIFT,l,exec,systemctl suspend && hyprlock"
         "META,e,exec,thunar"
