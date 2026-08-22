@@ -231,6 +231,14 @@
       enable = true;
     };
 
+    # DPI/button/LED config for the G502 HERO. Provides the ratbagctl CLI and a
+    # dbus-activated daemon; piper (see the desktop home config) is the GUI.
+    # Settings are written to the mouse's onboard profiles, so they survive a
+    # reboot and do not need a daemon running to stay in effect.
+    ratbagd = {
+      enable = true;
+    };
+
     xserver.videoDrivers = [ "nvidia" ];
   };
 
