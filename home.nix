@@ -88,6 +88,7 @@
 
       # other utility
       nodejs
+      codegraph # code knowledge graph + MCP server for coding agents
       nil # Nix language server
       texlab # LaTeX language server
       wl-clipboard-rs
@@ -201,17 +202,12 @@
         "gitlab.cc-asp.fraunhofer.de" = {
           hostname = "gitlab.cc-asp.fraunhofer.de";
           identityFile = "~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de";
+          identitiesOnly = true;
           addKeysToAgent = "yes";
         };
         "gitlab.kit.edu" = {
           hostname = "gitlab.kit.edu";
           identityFile = "~/.ssh/id_ed25519.gitlab.kit.edu";
-          addKeysToAgent = "yes";
-        };
-        "ki1-vm" = {
-          hostname = "172.16.120.21";
-          user = "bas39150";
-          identityFile = "~/.ssh/id_ed25519.gitlab.cc-asp.fraunhofer.de";
           addKeysToAgent = "yes";
         };
       };
@@ -265,6 +261,12 @@
 
     claude-code = {
       enable = true;
+      mcpServers = {
+        opcfoundation = {
+          type = "http";
+          url = "https://reference.opcfoundation.org/mcp";
+        };
+      };
     };
 
     git = {

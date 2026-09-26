@@ -31,14 +31,27 @@
         config = {
           allowUnfree = true;
         };
+        overlays = [
+          # TEMPORARY: claude-code 2.1.257, not yet in nixos-unstable.
+          # Files vendored from nixpkgs pkgs/by-name/cl/claude-code; drop this
+          # overlay and ./pkgs/claude-code once the bump lands upstream.
+          (final: prev: {
+            claude-code = prev.callPackage ./pkgs/claude-code/package.nix { };
+          })
+          # codegraph is not in nixpkgs at all; upstream ships prebuilt
+          # release bundles, which ./pkgs/codegraph patches for NixOS.
+          (final: prev: {
+            codegraph = prev.callPackage ./pkgs/codegraph/package.nix { };
+          })
+        ];
       };
     in {
       nixosConfigurations.bastian = nixpkgs.lib.nixosSystem {
         inherit pkgs;
         modules = [
           minesddm.nixosModules.default
-          ./device-specific/laptop-01/hardware.nix
-          ./device-specific/laptop-01/configuration.nix
+          ./device-specific/desktop/hardware.nix
+          ./device-specific/desktop/configuration.nix
         ];
       };
 
@@ -47,7 +60,7 @@
         modules = [
           stylix.homeModules.stylix
           ./home.nix
-          ./device-specific/laptop-01/home.nix
+          ./device-specific/desktop/home.nix
         ];
       };
     };
