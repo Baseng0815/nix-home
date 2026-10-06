@@ -43,7 +43,7 @@
       xfce.tumbler
       gimp2
       nautilus
-      beekeeper-studio # sql client
+      # beekeeper-studio # sql client (NOTE: marked insecure)
       dbeaver-bin
       qpwgraph # pipewire patchbay
       drawio
